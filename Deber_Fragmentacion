@@ -1,0 +1,43 @@
+ ----------------Inertar Datos Fragmentación Vertical---------------------
+
+insert Cliente1Vertical( id, Nombres, Apellidos)
+SELECT  id, Nombres, Apellidos  FROM Clientes
+
+ insert Cliente2Vertical( id, Direccion, Telefono, Correo)
+SELECT  id, Direccion, Telefono, Correo  FROM Clientes
+
+
+
+ ----------------Inertar Datos Fragmentación Horizontal---------------------
+
+INSERT INTO Cliente3Horizontal (id, Nombres, Apellidos)
+SELECT id, Nombres, Apellidos 
+FROM Clientes
+WHERE id BETWEEN 524289 AND 1048576;
+
+INSERT INTO Cliente4Horizontal (id, Direccion, Telefono, Correo)
+SELECT id, Direccion, Telefono, Correo
+FROM Clientes
+WHERE id BETWEEN 524289 AND 1048576;
+
+
+
+
+---------Eliminar los datos que se pasan a fragmentacion Horizontal--------
+
+DELETE FROM Cliente1Vertical
+WHERE id BETWEEN 524289 AND 1048576;
+
+DELETE FROM Cliente2Vertical
+WHERE id BETWEEN 524289 AND 1048576;
+
+
+------------Consulta para unir todas las tablas fragmentadas---------------- 
+
+SELECT c1.id, c1.Nombres, c1.Apellidos, c2.Direccion, c2.Telefono, c2.Correo from Cliente1Vertical c1 
+inner join Cliente2Vertical c2 on c1.id = c2.id
+
+UNION ALL
+
+select c1.id, c1.Nombres, c1.Apellidos, c2.Direccion, c2.Telefono, c2.Correo from  Cliente3Horizontal  c1 
+inner join  Cliente4Horizontal c2 on c1.id = c2.id
